@@ -1,16 +1,27 @@
+import os
 from dotenv import load_dotenv
 import json
 import pdfplumber
 import io
 from google import genai
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
-from fastapi.response import RedirectResponse
+from googleapiclient.errors import HttpError
+from googleapiclient.discovery import build
+from fastapi.responses import RedirectResponse
+from pydantic import BaseModel
 
 load_dotenv()
 
-SCOPES = ["https://www.googleapis.com/auth/calendar.events"] # Google Calendar Scope
+SCOPES = ["https://www.googleapis.com/auth/calendar.events"] 
+
+class CalendarEvent(BaseModel):
+    title: str
+    type: str
+    date: str
+    course: str
 
 app = FastAPI()
 oauth_states = set()
@@ -74,3 +85,34 @@ def auth_callback(code: str, state: str):
 @app.get("/auth/status/")
 def auth_status():
     return {"authenticated": os.path.isfile("user.txt")}
+
+@app.post("/calendar/add/")
+def calendar_add(events: list[CalendarEvent]):
+    try:
+        if not os.path.isfile("user.txt"):
+            raise HTTPException(status_code=401, detail="Not Authenticated")
+
+        creds = None
+        with open("user.txt") as f:
+            creds = f.read()
+
+        info = json.loads(creds)
+        service = build("calendar", "v3", credentials=Credentials.from_authorized_user_info(info))
+
+        for e in events:
+            event = {
+                'summary': f"{e.course} - {e.title}",
+                'start': {
+                    'date': e.date
+                },
+                'end': {
+                    'date': e.date
+                }
+            }
+
+            service.events().insert(calendarId='primary', body=event).execute()
+
+        return {"success": True}
+    except HttpError as http:
+        raise HTTPException(status_code=500, detail=http)
+
