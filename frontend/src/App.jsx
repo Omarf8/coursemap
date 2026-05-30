@@ -1,11 +1,23 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import './App.css'
 
 function App() {
   const [data, setData] = useState(null)
   const [fileMissing, setMissing] = useState(false)
   const [error, setError] = useState(null)
+	const [auth, setAuth] = useState(null)
   const submission = useRef(null)
+
+	useEffect(() => {
+		const checkAuth = async () => {
+			const response = await fetch("http://127.0.0.1:8000/auth/status/")
+			const data = await response.json()
+
+			setAuth(data.authenticated)
+		}
+
+		checkAuth()
+	}, [])
 
   const processFile = async () => {
     const file = submission.current.files[0]
@@ -37,28 +49,32 @@ function App() {
   }
 
   return (
-    <div className="syllabus-file">
-      <div className="syllabus-upload">
-        <div className="column-format">
-          {fileMissing && <p className="red-text">(Missing File)</p>}
-          <p>Upload A School Syllabus To Extract Important Dates</p>
-          <input ref={submission} type="file" id="upload" onChange={() => setMissing(false)}/>
-          <button onClick={processFile}>Confirm</button>
-        </div>
-      </div>
-      <div className="parsed-results">
-        <div className="results-box">
-          {error && <p className="red-text">Something went wrong, please try again later.</p>}
-          {data ?
-          data && 
-            data.map((s, index) => (
-              <p key={index}>Title: {s.title}, Type: {s.type}, Date: {s.date}, Course: {s.course}</p>
-          )) 
-          :
-          <p>Parsed Results Will Be Shown Here</p>}
-        </div>
-      </div>
-    </div>
+		<>
+			<div className="syllabus-file">
+				<div className="syllabus-upload">
+					<div className="column-format"> {fileMissing && <p className="red-text">(Missing File)</p>}
+						<p>Upload A School Syllabus To Extract Important Dates</p>
+						<input ref={submission} type="file" id="upload" onChange={() => setMissing(false)}/>
+						<button onClick={processFile}>Confirm</button>
+					</div>
+				</div>
+				<div className="parsed-results">
+					<div className="results-box">
+						{error && <p className="red-text">Something went wrong, please try again later.</p>}
+						{data ?
+						data && 
+							data.map((s, index) => (
+								<p key={index}>Title: {s.title}, Type: {s.type}, Date: {s.date}, Course: {s.course}</p>
+						)) 
+						:
+						<p>Parsed Results Will Be Shown Here</p>}
+					</div>
+				</div>
+			</div>
+			<div>
+				{auth === false && <button>Connect to Google Calendar</button>}
+			</div>
+		</>
   )
 }
 
