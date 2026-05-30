@@ -10,7 +10,7 @@ function App() {
 
 	useEffect(() => {
 		const checkAuth = async () => {
-			const response = await fetch("http://127.0.0.1:8000/auth/status/")
+			const response = await fetch("http://localhost:8000/auth/status/")
 			const data = await response.json()
 
 			setAuth(data.authenticated)
@@ -18,6 +18,13 @@ function App() {
 
 		checkAuth()
 	}, [])
+
+	const authLogin = async () => {
+		const response = await fetch("http://localhost:8000/auth/login/")	
+		const data = await response.json()
+
+		window.location.href = data.url
+	}
 
   const processFile = async () => {
     const file = submission.current.files[0]
@@ -31,7 +38,7 @@ function App() {
     const formData = new FormData()
     formData.append("file", file)
 
-    const response = await fetch("http://127.0.0.1:8000/uploadfile/", {
+    const response = await fetch("http://localhost:8000/uploadfile/", {
       method: "POST",
       body: formData
     })
@@ -72,7 +79,7 @@ function App() {
 				</div>
 			</div>
 			<div>
-				{auth === false && <button>Connect to Google Calendar</button>}
+				{auth === false && <button onClick={authLogin}>Connect to Google Calendar</button>}
 			</div>
 		</>
   )
