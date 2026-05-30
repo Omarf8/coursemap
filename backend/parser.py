@@ -3,6 +3,9 @@ from dotenv import load_dotenv
 import json
 import pdfplumber
 import io
+import secrets
+import hashlib
+import base64
 from google import genai
 from fastapi import FastAPI, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -24,7 +27,7 @@ class CalendarEvent(BaseModel):
     course: str
 
 app = FastAPI()
-oauth_states = set()
+oauth_states = {} 
 
 origins = [
     "http://localhost:5173",
@@ -62,9 +65,17 @@ async def parse_syllabus(file: UploadFile):
 
 @app.get("/auth/login/")
 def auth_login():
+    code_verifier = secrets.token_urlsafe(64)
+    code_challenge = base64.urlsafe_b64encode(
+        hashlib.sha256(code_verifier.encode()).digest()
+    ).rstrip(b'=').decode()
+
     flow = Flow.from_client_secrets_file("credentials.json", scopes=SCOPES, redirect_uri="http://localhost:8000/auth/callback")
-    url, state = flow.authorization_url()
-    oauth_states.add(state)
+    url, state = flow.authorization_url(
+        code_challenge=code_challenge,
+        code_challenge_method='S256'
+    )
+    oauth_states[state] = code_verifier
     return {"url": url}
 
 @app.get("/auth/callback/")
@@ -73,14 +84,14 @@ def auth_callback(code: str, state: str):
         return {"Error": "Unknown Login Attempt"}
 
     flow = Flow.from_client_secrets_file("credentials.json", scopes=SCOPES, redirect_uri="http://localhost:8000/auth/callback")
-    flow.fetch_token(code=code)
+    flow.fetch_token(code=code, code_verifier=oauth_states[state])
     creds = flow.credentials
 
     with open("user.txt", 'w') as f:
         f.write(creds.to_json())
 
-    oauth_states.discard(state)
-    return RedirectResponse("http://127.0.0.1:5173") 
+    del oauth_states[state]
+    return RedirectResponse("http://localhost:5173") 
 
 @app.get("/auth/status/")
 def auth_status():
