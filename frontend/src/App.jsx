@@ -5,6 +5,7 @@ function App() {
   const [data, setData] = useState(null)
   const [fileMissing, setMissing] = useState(false)
   const [error, setError] = useState(null)
+	const [uploadSuccess, setUploadSuccess] = useState(null)
 	const [auth, setAuth] = useState(null)
   const submission = useRef(null)
 
@@ -55,6 +56,28 @@ function App() {
     setData(parsedData)
   }
 
+	const calendarUpload = async () => {
+		try {
+			const response = await fetch("http://localhost:8000/calendar/add/", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(data)
+			})
+
+			if(!response.ok) {
+				throw new Error(`Request failed ${response.status}`)
+			}		
+
+			setUploadSuccess(true)
+		}
+		catch (err) {
+			console.log(err)
+			setUploadSuccess(false)
+		}		
+	}
+
   return (
 		<>
 			<div className="syllabus-file">
@@ -80,6 +103,7 @@ function App() {
 			</div>
 			<div>
 				{auth === false && <button onClick={authLogin}>Connect to Google Calendar</button>}
+				{data && <button onClick={calendarUpload}>Upload to Google Calendar</button>}
 			</div>
 		</>
   )
