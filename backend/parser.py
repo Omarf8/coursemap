@@ -72,6 +72,8 @@ def auth_login():
 
     flow = Flow.from_client_secrets_file("credentials.json", scopes=SCOPES, redirect_uri="http://localhost:8000/auth/callback")
     url, state = flow.authorization_url(
+        access_type="offline",
+        prompt="consent",
         code_challenge=code_challenge,
         code_challenge_method='S256'
     )
