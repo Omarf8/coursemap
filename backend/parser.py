@@ -110,7 +110,12 @@ def calendar_add(events: list[CalendarEvent]):
             creds = f.read()
 
         info = json.loads(creds)
-        service = build("calendar", "v3", credentials=Credentials.from_authorized_user_info(info))
+        
+        creds = Credentials.from_authorized_user_info(info)
+        service = build("calendar", "v3", credentials=creds)
+
+        with open("user.txt", "w") as f:
+            f.write(creds.to_json())
 
         for e in events:
             event = {
