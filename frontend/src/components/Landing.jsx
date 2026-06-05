@@ -1,3 +1,5 @@
+import styles from './Landing.module.css'
+
 function Landing() {
 	const authLogin = async () => {
 		const response = await fetch("http://localhost:8000/auth/login/")	
@@ -7,13 +9,13 @@ function Landing() {
 	}
 
 	return (
-		<div>
+		<div className={styles.content}>
 			<div>
 				<h1>CourseMap</h1>
 				<h4>Quickly Extract Dates From Syllabi and Populate Your Calendar!</h4>
 			</div>
 			<div>
-				<button onClick={authLogin}>Sign in with Google</button>
+				<button className={styles.google}onClick={authLogin}>Sign in with Google</button>
 			</div>
 		</div>
 	)
