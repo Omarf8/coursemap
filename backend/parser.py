@@ -81,7 +81,10 @@ def auth_login():
     return {"url": url}
 
 @app.get("/auth/callback/")
-def auth_callback(code: str, state: str):
+def auth_callback(code: str = None, state: str = None, error: str = None, scope: str = None):
+    if error or not code:
+        return RedirectResponse("http://localhost:5173")
+
     if state not in oauth_states:
         return {"Error": "Unknown Login Attempt"}
 
