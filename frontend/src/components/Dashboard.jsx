@@ -1,3 +1,4 @@
+import styles from './Dashboard.module.css'
 import { useState, useRef } from 'react'
 
 function Dashboard() {
@@ -59,18 +60,21 @@ function Dashboard() {
 	}
 
   return (
-		<>
-			<div className="syllabus-file">
-				<div className="syllabus-upload">
-					<div className="column-format"> {fileMissing && <p className="red-text">(Missing File)</p>}
-						<p>Upload A School Syllabus To Extract Important Dates</p>
+		<div>
+			<header>
+				<h1>CourseMap</h1>
+			</header>
+			<div className={styles["syllabus-content"]}>
+				<div className={styles["syllabus-column"]}> 
+					<div className={styles["column-format"]}> {fileMissing && <p className={styles["red-text"]}>(Missing File)</p>}
+						<p>Upload A Syllabus To Extract Important Dates</p>
 						<input ref={submission} type="file" id="upload" onChange={() => setMissing(false)}/>
 						<button onClick={processFile}>Confirm</button>
 					</div>
 				</div>
-				<div className="parsed-results">
-					<div className="results-box">
-						{error && <p className="red-text">Something went wrong, please try again later.</p>}
+				<div className={styles["parsed-column"]}> 
+					<div className={styles["results-box"]}>
+						{error && <p className={styles["red-text"]}>Something went wrong, please try again later.</p>}
 						{data ?
 						data && 
 							data.map((s, index) => (
@@ -84,7 +88,7 @@ function Dashboard() {
 			<div>
 				{data && <button onClick={calendarUpload}>Upload to Google Calendar</button>}
 			</div>
-		</>
+		</div>
   )
 }
 
