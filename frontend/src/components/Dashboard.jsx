@@ -6,6 +6,7 @@ function Dashboard() {
   const [fileMissing, setMissing] = useState(false)
   const [error, setError] = useState(null)
 	const [uploadSuccess, setUploadSuccess] = useState(null)
+	const [loading, setLoading] = useState(false)
   const submission = useRef(null)
 
   const processFile = async () => {
@@ -20,6 +21,7 @@ function Dashboard() {
     const formData = new FormData()
     formData.append("file", file)
 
+		setLoading(true)
     const response = await fetch("http://localhost:8000/uploadfile/", {
       method: "POST",
       body: formData
@@ -35,6 +37,7 @@ function Dashboard() {
     const parsedData = await response.json()
 
     setData(parsedData)
+		setLoading(false)
   }
 
 	const calendarUpload = async () => {
@@ -75,6 +78,7 @@ function Dashboard() {
 				<div className={styles["parsed-column"]}> 
 					{error && <p className={styles["red-text"]}>Something went wrong, please try again later.</p>}
 					{!data && <p>Parsed Results Will Be Shown Here</p>}
+					{loading && <p>Loading...</p>}
 					<div className={styles["results-box"]}>
 						{data && 
 							data.map((s, index) => (
