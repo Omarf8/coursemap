@@ -73,15 +73,16 @@ function Dashboard() {
 					</div>
 				</div>
 				<div className={styles["parsed-column"]}> 
+					{error && <p className={styles["red-text"]}>Something went wrong, please try again later.</p>}
+					{!data && <p>Parsed Results Will Be Shown Here</p>}
 					<div className={styles["results-box"]}>
-						{error && <p className={styles["red-text"]}>Something went wrong, please try again later.</p>}
-						{data ?
-						data && 
+						{data && 
 							data.map((s, index) => (
-								<p key={index}>Title: {s.title}, Type: {s.type}, Date: {s.date}, Course: {s.course}</p>
-						)) 
-						:
-						<p>Parsed Results Will Be Shown Here</p>}
+								<div className={styles["item-card"]} key={index}>
+									<div>{s.course} - <span>{s.type}</span></div>
+									<div>{s.title} ({s.date})</div>
+								</div>
+						))}
 					</div>
 				</div>
 			</div>

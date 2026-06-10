@@ -1,7 +1,11 @@
+header {
+	height: 4rem;
+}
+
 .syllabus-content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  min-height: 50vh;
+	height: calc(100vh - 4rem);
 }
 
 .syllabus-column {
@@ -14,14 +18,22 @@
 .column-format {
   display: flex;
   flex-direction: column;
+	justify-content: center;
   align-items: center;
 }
 
 .parsed-column {
   display: flex;
+	flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 10px;
+}
+
+.results-box {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 5px;
 }
 
 .red-text {
