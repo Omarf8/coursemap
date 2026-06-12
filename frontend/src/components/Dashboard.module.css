@@ -35,25 +35,29 @@ header {
 }
 
 .results-box {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	display: flex;
+	flex-direction: column;
 	gap: 8px;
+	height: calc(100vh - 4rem);
+	overflow-y: auto;
+	width: 100%;
 }
 
 .item-card {
-	padding: 5px;
+	padding: 10px;
 	border: 2px solid black;
 	border-radius: 5px;
 }
 
 .top-card {
 	display: flex;
+	align-items: center;
 	gap: 5px;
 }
 
 .icon {
-	width: 48px;
-	height: 48px;
+	width: 40px;
+	height: 40px;
 }
 
 .course-row {
@@ -63,9 +67,20 @@ header {
 }
 
 .course {
-	font-size: 1.5rem;
+	font-size: 1.2rem;
 	font-weight: bold;
 	white-space: nowrap;
+}
+
+.date {
+	color: #888;
+	font-size: 0.85rem;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 1rem;
+    margin-top: 4px;
 }
 
 .bubble {

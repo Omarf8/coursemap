@@ -115,11 +115,11 @@ function Dashboard() {
 										<img className={styles.icon} src={getIcon(s.type)} alt={s.type} />
 										<div>
 											<div className={styles["course-row"]}><div className={styles.course}>{s.course}</div> <span className={`${styles.bubble} ${getTypeClass(s.type)}`}>{s.type}</span></div>
-											<div>{new Date(s.date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</div>
+											<div className={styles.date}>{new Date(s.date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</div>
 										</div>
 									</div>
 										{/* <div>{s.course} - <span>{s.type}</span></div> */}
-									<div>{s.title}</div>
+									<div className={styles.title}>{s.title}</div>
 								</div>
 						))}
 					</div>
@@ -127,12 +127,6 @@ function Dashboard() {
 			</div>
 			<div>
 				{data && <button onClick={calendarUpload}>Upload to Google Calendar</button>}
-				<img src={pencilIcon} alt="Pencil" />
-				<img src={paperIcon} alt="Paper" />
-				<img src={questionIcon} alt="Question" />
-				<img src={starIcon} alt="Star" />
-				<img src={gearIcon} alt="Star" />
-				<img src={lightbulbIcon} alt="Star" />
 			</div>
 		</div>
   )
