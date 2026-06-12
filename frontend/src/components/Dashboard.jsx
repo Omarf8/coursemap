@@ -1,5 +1,11 @@
 import styles from './Dashboard.module.css'
 import { useState, useRef } from 'react'
+import pencilIcon from '../assets/pencil.png'
+import paperIcon from '../assets/paper.png'
+import questionIcon from '../assets/question.png'
+import starIcon from '../assets/star.png'
+import gearIcon from '../assets/gear.png'
+import lightbulbIcon from '../assets/lightbulb.png'
 
 function Dashboard() {
   const [data, setData] = useState(null)
@@ -62,6 +68,28 @@ function Dashboard() {
 		}		
 	}
 
+	const getIcon = (input) => {
+		let type = input.toLowerCase()
+		
+		if(type.includes("homework")) return pencilIcon
+		else if(type.includes("exam") || type.includes("midterm")) return starIcon
+		else if(type.includes("project")) return lightbulbIcon
+		else if(type.includes("quiz")) return gearIcon
+		else if(type.includes("essay") || type.includes("paper")) return paperIcon
+		return questionIcon
+	}
+
+	const getTypeClass = (input) => {
+		let type = input.toLowerCase()
+		
+		if(type.includes("homework")) return styles.homework
+		else if(type.includes("exam") || type.includes("midterm")) return styles.exam
+		else if(type.includes("project")) return styles.project
+		else if(type.includes("quiz")) return styles.quiz
+		else if(type.includes("essay") || type.includes("paper")) return styles.paper
+		return styles.question
+	}
+
   return (
 		<div>
 			<header>
@@ -83,8 +111,15 @@ function Dashboard() {
 						{data && 
 							data.map((s, index) => (
 								<div className={styles["item-card"]} key={index}>
-									<div>{s.course} - <span>{s.type}</span></div>
-									<div>{s.title} ({s.date})</div>
+									<div className={styles["top-card"]}>
+										<img className={styles.icon} src={getIcon(s.type)} alt={s.type} />
+										<div>
+											<div className={styles["course-row"]}><div className={styles.course}>{s.course}</div> <span className={`${styles.bubble} ${getTypeClass(s.type)}`}>{s.type}</span></div>
+											<div>{new Date(s.date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</div>
+										</div>
+									</div>
+										{/* <div>{s.course} - <span>{s.type}</span></div> */}
+									<div>{s.title}</div>
 								</div>
 						))}
 					</div>
@@ -92,6 +127,12 @@ function Dashboard() {
 			</div>
 			<div>
 				{data && <button onClick={calendarUpload}>Upload to Google Calendar</button>}
+				<img src={pencilIcon} alt="Pencil" />
+				<img src={paperIcon} alt="Paper" />
+				<img src={questionIcon} alt="Question" />
+				<img src={starIcon} alt="Star" />
+				<img src={gearIcon} alt="Star" />
+				<img src={lightbulbIcon} alt="Star" />
 			</div>
 		</div>
   )

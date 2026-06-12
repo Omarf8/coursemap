@@ -2,6 +2,10 @@ header {
 	height: 4rem;
 }
 
+.red-text {
+  color: red;
+}
+
 .syllabus-content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -33,9 +37,48 @@ header {
 .results-box {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
+	gap: 8px;
+}
+
+.item-card {
+	padding: 5px;
+	border: 2px solid black;
+	border-radius: 5px;
+}
+
+.top-card {
+	display: flex;
 	gap: 5px;
 }
 
-.red-text {
-  color: red;
+.icon {
+	width: 48px;
+	height: 48px;
 }
+
+.course-row {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.course {
+	font-size: 1.5rem;
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+.bubble {
+	padding: 5px 10px;
+	border: 2px solid black;
+	border-radius: 25px;
+}
+
+.homework {
+	background-color: #8fd3ff;	
+}
+
+.exam {
+	background-color: #f04f78;
+}
+
