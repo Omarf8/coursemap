@@ -23,6 +23,7 @@ function Dashboard() {
       return
     }
 
+		setError(false)
     setMissing(false)
     const formData = new FormData()
     formData.append("file", file)
@@ -35,6 +36,7 @@ function Dashboard() {
 
     if(!response.ok) {
       setError(true)
+			setLoading(false)
       return
     }
 
