@@ -116,7 +116,6 @@ function Dashboard() {
 											<div className={styles.date}>{new Date(s.date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</div>
 										</div>
 									</div>
-										{/* <div>{s.course} - <span>{s.type}</span></div> */}
 									<div className={styles.title}>{s.title}</div>
 								</div>
 						))}
