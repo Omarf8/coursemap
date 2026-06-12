@@ -1,5 +1,11 @@
 header {
+	display: flex;
+	align-items: center;
 	height: 4rem;
+	font-size: 3rem;
+	font-weight: 600;
+	background-color: #88a3bc;
+	padding: 0 1rem;
 }
 
 .red-text {
@@ -31,6 +37,7 @@ header {
 	flex-direction: column;
   justify-content: center;
   align-items: center;
+	overflow: hidden;
   padding: 10px;
 }
 

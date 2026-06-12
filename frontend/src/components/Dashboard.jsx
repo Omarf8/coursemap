@@ -92,9 +92,7 @@ function Dashboard() {
 
   return (
 		<div>
-			<header>
-				<h1>CourseMap</h1>
-			</header>
+			<header>CourseMap</header>
 			<div className={styles["syllabus-content"]}>
 				<div className={styles["syllabus-column"]}> 
 					<div className={styles["column-format"]}> {fileMissing && <p className={styles["red-text"]}>(Missing File)</p>}
