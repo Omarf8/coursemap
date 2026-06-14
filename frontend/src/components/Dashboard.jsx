@@ -1,5 +1,6 @@
 import styles from './Dashboard.module.css'
 import { useState, useRef } from 'react'
+import coursemapLogo from '../assets/coursemap.png'
 import pencilIcon from '../assets/pencil.png'
 import paperIcon from '../assets/paper.png'
 import questionIcon from '../assets/question.png'
@@ -94,7 +95,10 @@ function Dashboard() {
 
   return (
 		<div>
-			<header>CourseMap</header>
+			<header>
+				<img src={coursemapLogo} alt="" />
+				<span>CourseMap</span>
+			</header>
 			<div className={styles["syllabus-content"]}>
 				<div className={styles["syllabus-column"]}> 
 					<div className={styles["column-format"]}> {fileMissing && <p className={styles["red-text"]}>(Missing File)</p>}

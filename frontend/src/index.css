@@ -1,3 +1,7 @@
+:root {
+	--header-height: 4rem;
+}
+
 * {
   margin: 0px;
 	padding: 0px;
