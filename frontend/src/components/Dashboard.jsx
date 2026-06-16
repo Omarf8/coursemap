@@ -92,6 +92,11 @@ function Dashboard() {
 		else if(type.includes("essay") || type.includes("paper")) return styles.paper
 		return styles.question
 	}
+	
+	const formatDate = (date) => {
+		const [year, month, day] = date.split('-')
+		return new Date(year, month - 1, day).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })
+	}
 
   return (
 		<div>
@@ -101,35 +106,34 @@ function Dashboard() {
 			</header>
 			<div className={styles["syllabus-content"]}>
 				<div className={styles["syllabus-column"]}> 
+					{loading && <p>Loading...</p>}
 					<div className={styles["column-format"]}> {fileMissing && <p className={styles["red-text"]}>(Missing File)</p>}
 						<p>Upload A Syllabus To Extract Important Dates</p>
 						<input ref={submission} type="file" id="upload" onChange={() => setMissing(false)}/>
 						<button onClick={processFile}>Confirm</button>
 					</div>
+					{data && <button onClick={calendarUpload}>Upload to Google Calendar</button>}
 				</div>
 				<div className={styles["parsed-column"]}> 
 					{error && <p className={styles["red-text"]}>Something went wrong, please try again later.</p>}
 					{!data && <p>Parsed Results Will Be Shown Here</p>}
-					{loading && <p>Loading...</p>}
-					<div className={styles["results-box"]}>
-						{data && 
-							data.map((s, index) => (
+					{data && 
+						<div className={styles["results-box"]}>
+							{data.map((s, index) => (
 								<div className={styles["item-card"]} key={index}>
 									<div className={styles["top-card"]}>
 										<img className={styles.icon} src={getIcon(s.type)} alt={s.type} />
 										<div>
 											<div className={styles["course-row"]}><div className={styles.course}>{s.course}</div> <span className={`${styles.bubble} ${getTypeClass(s.type)}`}>{s.type}</span></div>
-											<div className={styles.date}>{new Date(s.date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</div>
+											<div className={styles.date}>{formatDate(s.date)}</div>
 										</div>
 									</div>
 									<div className={styles.title}>{s.title}</div>
 								</div>
-						))}
-					</div>
+							))}
+						</div>
+					}
 				</div>
-			</div>
-			<div>
-				{data && <button onClick={calendarUpload}>Upload to Google Calendar</button>}
 			</div>
 		</div>
   )

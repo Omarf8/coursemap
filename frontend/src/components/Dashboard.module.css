@@ -27,9 +27,11 @@ header img {
 
 .syllabus-column {
   display: flex;
+	flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 10px;
+	gap: 2rem;
 }
 
 .column-format {
@@ -51,7 +53,7 @@ header img {
 .results-box {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	gap: 0.5rem;
 	overflow-y: auto;
 	width: 100%;
 }
@@ -65,7 +67,7 @@ header img {
 .top-card {
 	display: flex;
 	align-items: center;
-	gap: 5px;
+	gap: 0.5rem;
 }
 
 .icon {
