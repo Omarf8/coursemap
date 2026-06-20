@@ -10,6 +10,7 @@ import lightbulbIcon from '../assets/lightbulb.png'
 
 function Dashboard() {
   const [data, setData] = useState(null)
+	const [empty, setEmpty] = useState(null)
   const [fileMissing, setMissing] = useState(false)
   const [error, setError] = useState(null)
 	const [uploadSuccess, setUploadSuccess] = useState(null)
@@ -41,11 +42,10 @@ function Dashboard() {
       return
     }
 
-    setError(false)
-
     const parsedData = await response.json()
 
     setData(parsedData)
+		setEmpty(parsedData.length === 0)
 		setLoading(false)
   }
 
@@ -112,12 +112,12 @@ function Dashboard() {
 						<input ref={submission} type="file" id="upload" onChange={() => setMissing(false)}/>
 						<button onClick={processFile}>Confirm</button>
 					</div>
-					{data && <button onClick={calendarUpload}>Upload to Google Calendar</button>}
+					{data && !empty && <button onClick={calendarUpload}>Upload to Google Calendar</button>}
 				</div>
 				<div className={styles["parsed-column"]}> 
-					{error && <p className={styles["red-text"]}>Something went wrong, please try again later.</p>}
+					{error && <p className={styles["red-text"]}>Something went wrong, please try again later</p>}
 					{!data && <p>Parsed Results Will Be Shown Here</p>}
-					{data && 
+					{data && (empty ? <p>No results were found</p> :
 						<div className={styles["results-box"]}>
 							{data.map((s, index) => (
 								<div className={styles["item-card"]} key={index}>
@@ -131,7 +131,7 @@ function Dashboard() {
 									<div className={styles.title}>{s.title}</div>
 								</div>
 							))}
-						</div>
+						</div>)
 					}
 				</div>
 			</div>
