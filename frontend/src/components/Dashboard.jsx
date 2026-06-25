@@ -15,9 +15,11 @@ function Dashboard() {
   const [error, setError] = useState(null)
 	const [uploadSuccess, setUploadSuccess] = useState(null)
 	const [loading, setLoading] = useState(false)
+	const [uploading, setUploading] = useState(false)
   const submission = useRef(null)
 
   const processFile = async () => {
+		setUploadSuccess(null)
     const file = submission.current.files[0]
     // Prevent pressing confirm before uploading file
     if(!file) {
@@ -51,6 +53,7 @@ function Dashboard() {
 
 	const calendarUpload = async () => {
 		try {
+			setUploading(true)
 			const response = await fetch("http://localhost:8000/calendar/add/", {
 				method: "POST",
 				headers: {
@@ -64,11 +67,15 @@ function Dashboard() {
 			}		
 
 			setUploadSuccess(true)
+			setTimeout(() => setUploadSuccess(null), 3000)
 		}
 		catch (err) {
 			console.log(err)
 			setUploadSuccess(false)
 		}		
+		finally {
+			setUploading(false)
+		}
 	}
 
 	const getIcon = (input) => {
@@ -112,7 +119,15 @@ function Dashboard() {
 						<input ref={submission} type="file" id="upload" onChange={() => setMissing(false)}/>
 						<button onClick={processFile}>Confirm</button>
 					</div>
-					{data && !empty && <button onClick={calendarUpload}>Upload to Google Calendar</button>}
+					{data && !empty && (
+						<div className={styles.uploads}>
+							<button onClick={calendarUpload} disabled={uploading}>
+								{uploading ? "Uploading" : "Upload to Google Calendar"}
+							</button>
+							{uploadSuccess === true && <p>Successfully uploaded to Google Calendar!</p>}
+							{uploadSuccess === false && <p className={styles["red-text"]}>Failed to upload, please try again later</p>}
+						</div>
+					)}
 				</div>
 				<div className={styles["parsed-column"]}> 
 					{error && <p className={styles["red-text"]}>Something went wrong, please try again later</p>}

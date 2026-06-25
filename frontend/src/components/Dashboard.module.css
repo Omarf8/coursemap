@@ -41,6 +41,13 @@ header img {
   align-items: center;
 }
 
+.uploads {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
 .parsed-column {
   display: flex;
 	flex-direction: column;
