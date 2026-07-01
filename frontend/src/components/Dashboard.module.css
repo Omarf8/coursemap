@@ -109,6 +109,7 @@ header img {
 	border: 2px solid black;
 	border-radius: 25px;
 	white-space: nowrap;
+	background-color: #c9d4fd;
 }
 
 .homework {
@@ -117,5 +118,17 @@ header img {
 
 .exam {
 	background-color: #f04f78;
+}
+
+.project {
+	background-color: #86c69a;
+}
+
+.quiz {
+	background-color: #c090a9;
+}
+
+.essay {
+	background-color: #efdd91;
 }
 
