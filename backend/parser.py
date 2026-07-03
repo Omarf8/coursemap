@@ -56,7 +56,7 @@ async def parse_syllabus(file: UploadFile):
     try:
         response = client.models.generate_content(
             model="gemini-3-flash-preview", 
-            contents=f"Using the following data, I want you to give me back the defined (not TBD) important dates listed such as homework, exams, quizzes, and/or any other types of assignments. Return the raw JSON with no markdown. Your response should be a JSON array where we want the title of the assignment, the type (HOMEWORK, EXAM, etc.), date (YYYY-MM-DD), and the course (NAME NUMBER): {data}"
+            contents=f"Give me the defined (not TBD) important dates listed such as homework, exams, quizzes, and/or any other types of assignments. Return the raw JSON with no markdown. Your response should be a JSON array where we want the title of the assignment, the type (HOMEWORK, EXAM, etc.), date (YYYY-MM-DD), and course (NAME NUMBER). If there are multiple assignments of the same type with no distinguishing number or name, label them sequentially (e.g. Quiz #1, Quiz #2, etc.): {data}"
         )
     except Exception as e:
         raise HTTPException(status_code=503, detail=str(e))
@@ -83,7 +83,7 @@ def auth_login():
     return {"url": url}
 
 @app.get("/auth/callback/")
-def auth_callback(code: str = None, state: str = None, error: str = None, scope: str = None):
+def auth_callback(code: str | None = None, state: str | None = None, error: str | None = None, scope: str | None = None):
     if error or not code:
         return RedirectResponse("http://localhost:5173")
 
