@@ -21,7 +21,7 @@ function Landing() {
 					<h4>Quickly Extract Dates From Syllabi and Populate Your Calendar!</h4>
 				</div>
 				<div>
-					<button className={styles.google}onClick={authLogin}><FcGoogle size={20} /> Sign in with Google</button>
+					<button className={styles.google} onClick={authLogin}><FcGoogle size={20} /> Sign in with Google</button>
 				</div>
 			</div>
 		</div>

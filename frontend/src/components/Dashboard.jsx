@@ -11,6 +11,7 @@ import lightbulbIcon from '../assets/lightbulb.png'
 function Dashboard() {
   const [data, setData] = useState(null)
 	const [empty, setEmpty] = useState(null)
+	const [fileName, setFileName] = useState(null)
   const [fileMissing, setMissing] = useState(false)
   const [error, setError] = useState(null)
 	const [uploadSuccess, setUploadSuccess] = useState(null)
@@ -19,6 +20,8 @@ function Dashboard() {
   const submission = useRef(null)
 
   const processFile = async () => {
+		if(loading) { return }
+
 		setUploadSuccess(null)
     const file = submission.current.files[0]
     // Prevent pressing confirm before uploading file
@@ -116,8 +119,21 @@ function Dashboard() {
 					{loading && <p>Loading...</p>}
 					<div className={styles["column-format"]}> {fileMissing && <p className={styles["red-text"]}>(Missing File)</p>}
 						<p>Upload A Syllabus To Extract Important Dates</p>
-						<input ref={submission} type="file" id="upload" onChange={() => setMissing(false)}/>
-						<button onClick={processFile}>Confirm</button>
+						<div className={styles["file-selection"]}>
+							<label className={styles.buttons} htmlFor="upload">Choose file</label>
+							<span>{fileName ? fileName : "No file selected"}</span>
+							<input 
+								className={styles["file-input"]} 
+								ref={submission} 
+								type="file"	
+								id="upload" 
+								onChange={(e) => {
+									setMissing(false)
+									setFileName(e.target.files[0]?.name)
+								}}
+							/>
+						</div>
+						<button className={styles.buttons} onClick={processFile}>Confirm</button>
 					</div>
 					{data && !empty && (
 						<div className={styles.uploads}>
