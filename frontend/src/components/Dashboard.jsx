@@ -137,7 +137,7 @@ function Dashboard() {
 					</div>
 					{data && !empty && (
 						<div className={styles.uploads}>
-							<button onClick={calendarUpload} disabled={uploading}>
+							<button className={styles.buttons} onClick={calendarUpload} disabled={uploading}>
 								{uploading ? "Uploading" : "Upload to Google Calendar"}
 							</button>
 							{uploadSuccess === true && <p>Successfully uploaded to Google Calendar!</p>}
